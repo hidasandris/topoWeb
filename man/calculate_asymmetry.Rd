@@ -9,9 +9,11 @@ calculate_asymmetry(input_data, threshold = NULL, TI_steps = 3, filter = TRUE)
 \arguments{
 \item{input_data}{Input igraph object or data frame}
 
+\item{threshold}{Threshold to use, default is top 1\% of asymmetric links}
+
 \item{TI_steps}{TI steps to compute}
 
-\item{filter}{Threshold to use, default is top 1\% of asymmetric links}
+\item{filter}{Filter the most asymmetric links}
 }
 \value{
 A data frame with links indicating direction of asymmetric effect and it's value.

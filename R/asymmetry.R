@@ -8,9 +8,11 @@
 #' threshold values can be supplied.
 #'
 #' @param input_data Input igraph object or data frame
+#' @param threshold Threshold to use, default is top 1% of asymmetric links
 #' @param TI_steps TI steps to compute
-#' @param filter Threshold to use, default is top 1% of asymmetric links
+#' @param filter Filter the most asymmetric links
 #' @returns A data frame with links indicating direction of asymmetric effect and it's value.
+#' @importFrom rlang .data
 #' @export
 calculate_asymmetry <- function(input_data, threshold = NULL, TI_steps = 3, filter = TRUE) {
   TI_list <- suppressWarnings(calculate_TI_WI(input_data, TI_steps, asymmetry = TRUE))
@@ -36,13 +38,14 @@ calculate_asymmetry <- function(input_data, threshold = NULL, TI_steps = 3, filt
   AI_df <- dplyr::bind_rows(AI_list_rows)
 
   if (!filter) {
-    return(dplyr::filter(AI_df))
+    return(AI_df)
   }
 
   if (is.null(threshold)) {
-    asymmetry_filtered <- dplyr::slice_max(AI_df, weight, prop = .01)
+    asymmetry_filtered <- dplyr::slice_max(AI_df, .data$weight, prop = .01)
   } else {
     asymmetry_filtered <- AI_df[abs(AI_df$weight) >= threshold, ]
+    row.names(asymmetry_filtered) <- NULL
   }
 
   return(asymmetry_filtered)

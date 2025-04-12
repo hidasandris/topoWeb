@@ -16,11 +16,10 @@ calculate_TI_WI <- function(input_data, steps, symmetrization_method = "sum", as
   numstep <- steps
   symtype <- symmetrization_method
 
-  if (class(input_data) == "igraph") {
-    if (!require(igraph)) stop("igraph package not installed!")
+  if (inherits(input_data, "igraph")) {
     input_data_edgelist <- igraph::as_edgelist(input_data)
 
-    if (is.null(E(input_data)$weight)) {
+    if (is.null(igraph::E(input_data)$weight)) {
       input_data_edgelist <- data.frame(
         node1 = input_data_edgelist[, 1],
         node2 = input_data_edgelist[, 2]
@@ -30,27 +29,27 @@ calculate_TI_WI <- function(input_data, steps, symmetrization_method = "sum", as
       input_data_edgelist <- data.frame(
         node1 = input_data_edgelist[, 1],
         node2 = input_data_edgelist[, 2],
-        weight = E(input_data)$weight
+        weight = igraph::E(input_data)$weight
       )
       input_data <- input_data_edgelist[c("node1", "node2", "weight")]
     }
   }
 
-  if (class(input_data) != "data.frame") input_data <- as.data.frame(input_data)
+  if (!inherits(input_data, "data.frame")) input_data <- as.data.frame(input_data)
 
   if (!dim(input_data)[2] %in% c(2, 3)) stop("Wrong input format")
 
   if (dim(input_data)[2] == 2) {
-    if (is_character(input_data[1, 1])) {
+    if (is.character(input_data[1, 1])) {
       names(input_data) <- c("V1", "V2")
     }
   } else {
-    if (is_character(input_data[1, 1])) {
+    if (is.character(input_data[1, 1])) {
       names(input_data) <- c("V1", "V2", "V3")
     }
 
     if (any(duplicated(input_data[, 1:2]))) {
-      input_data <- aggregate(V3 ~ V1 + V2, data = input_data, FUN = sum)
+      input_data <- stats::aggregate(V3 ~ V1 + V2, data = input_data, FUN = sum)
       warning("Multilink edges were summed.")
     }
   }

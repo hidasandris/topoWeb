@@ -1,14 +1,21 @@
 Package: topoWeb
 Title: Topological Metrics for Network Analysis
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Andras", "Hidas", , "hidas.andras@ecolres.hu", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
-License: `use_gpl3_license()`
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
 	igraph (>= 1.6.0),
 	dplyr,
-	ggplot2
+	rlang,
+	stats
+Depends: 
+    R (>= 3.5)
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

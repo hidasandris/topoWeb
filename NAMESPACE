@@ -2,3 +2,4 @@
 
 export(calculate_TI_WI)
 export(calculate_asymmetry)
+importFrom(rlang,.data)
